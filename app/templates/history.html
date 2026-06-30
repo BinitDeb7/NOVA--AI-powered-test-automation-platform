@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Test History — Nova{% endblock %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-clock-rotate-left"></i>
+            Test History
+        </h2>
+        <p>Review, download reports, or manage your previous test executions.</p>
+    </div>
+
+    {% if history %}
+
+    <!-- Stats Row -->
+    {% set total  = history | length %}
+    {% set passed = history | selectattr('status','equalto','Success') | list | length %}
+    {% set failed = total - passed %}
+    {% set rate   = ((passed / total) * 100) | round(0) | int if total > 0 else 0 %}
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card dashboard-card text-center py-3 fade-in">
+                <div class="stat-num" style="color:var(--color-primary-light);">{{ total }}</div>
+                <div class="stat-lbl">Total Runs</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card dashboard-card text-center py-3 fade-in fade-in-delay-1">
+                <div class="stat-num" style="color:var(--color-success);">{{ passed }}</div>
+                <div class="stat-lbl">Passed</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card dashboard-card text-center py-3 fade-in fade-in-delay-2">
+                <div class="stat-num" style="color:var(--color-danger);">{{ failed }}</div>
+                <div class="stat-lbl">Failed</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card dashboard-card text-center py-3 fade-in fade-in-delay-3">
+                <div class="stat-num" style="color:var(--color-accent);">{{ rate }}%</div>
+                <div class="stat-lbl">Pass Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card dashboard-card fade-in fade-in-delay-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list-check"></i> All Runs
+                </h5>
+                <div class="input-group" style="max-width:280px;">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="history-search" class="form-control" placeholder="Search URL or status…">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle mb-0" id="history-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><i class="fas fa-calendar-alt me-1"></i>Date &amp; Time</th>
+                            <th><i class="fas fa-globe me-1"></i>URL Tested</th>
+                            <th><i class="fas fa-circle-check me-1"></i>Status</th>
+                            <th><i class="fas fa-sliders me-1"></i>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in history %}
+                        <tr class="history-row fade-in" style="animation-delay: {{ loop.index * 0.04 }}s;">
+                            <td class="text-muted" style="font-size:0.82rem;">{{ loop.index }}</td>
+                            <td>
+                                <span style="font-weight:600;">{{ item.timestamp.strftime('%d %b %Y') }}</span>
+                                <span class="text-muted ms-2" style="font-size:0.8rem;">{{ item.timestamp.strftime('%H:%M') }}</span>
+                            </td>
+                            <td>
+                                <span class="history-url" style="font-size:0.87rem;word-break:break-all;">{{ item.url_tested }}</span>
+                            </td>
+                            <td>
+                                {% if item.status == 'Success' %}
+                                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>Success</span>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="fas fa-times me-1"></i>{{ item.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <a href="{{ url_for('export.download_history', test_run_id=item.id) }}"
+                                       class="btn btn-sm btn-danger" title="Download PDF">
+                                        <i class="fas fa-file-pdf me-1"></i><span class="d-none d-md-inline">PDF</span>
+                                    </a>
+                                    <a href="{{ url_for('export.download_excel_history', test_run_id=item.id) }}"
+                                       class="btn btn-sm btn-success" title="Download Excel">
+                                        <i class="fas fa-file-excel me-1"></i><span class="d-none d-md-inline">Excel</span>
+                                    </a>
+                                    <form action="{{ url_for('main.delete_history', test_run_id=item.id) }}"
+                                          method="POST" style="display:inline;"
+                                          onsubmit="return confirm('Delete this test run?');">
+                                        <button type="submit" class="btn btn-sm btn-secondary" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="card dashboard-card fade-in">
+        <div class="card-body">
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
+                <h5>No Test History Yet</h5>
+                <p>You haven't run any tests yet. Head to the Dashboard to execute your first test.</p>
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">
+                    <i class="fas fa-rocket me-1"></i> Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('history-search')?.addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#history-table .history-row').forEach(row => {
+        const url   = row.querySelector('.history-url')?.textContent.toLowerCase() || '';
+        const badge = row.querySelector('.badge')?.textContent.toLowerCase() || '';
+        row.style.display = (url.includes(q) || badge.includes(q)) ? '' : 'none';
+    });
+});
+</script>
+{% endblock %}

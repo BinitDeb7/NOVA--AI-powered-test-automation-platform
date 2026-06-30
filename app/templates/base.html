@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TestVerse — AI-Powered Automated Web Testing Platform. Generate, run and analyze Selenium tests using natural language and local AI.">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}Nova — AI Testing Platform{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Highlight.js (for code analysis output) -->
+    <link id="hljs-theme-dark"  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link id="hljs-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css" disabled>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container-custom"></div>
+
+    <!-- Top navigation progress bar -->
+    <div id="nav-progress-bar"></div>
+
+    <!-- ============================================================
+         PREMIUM TEST LOADING OVERLAY  (v2 — Cinematic)
+         ============================================================ -->
+    <div id="test-loading-overlay" role="status" aria-live="polite" aria-label="Running test">
+        <!-- Particles are spawned by JS -->
+
+        <div class="tlo-card">
+            <!-- ── 3-Ring neon spinner ── -->
+            <div class="tlo-logo-ring">
+                <!-- Ring 1: outer fast -->
+                <svg class="tlo-ring-svg" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="rg1" x1="0" y1="0" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%"   stop-color="#6366f1"/>
+                            <stop offset="60%"  stop-color="#06b6d4"/>
+                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="55" cy="55" r="52" stroke="url(#rg1)" stroke-width="2.5"
+                            stroke-linecap="round" stroke-dasharray="100 228"/>
+                </svg>
+                <!-- Ring 2: middle reverse -->
+                <svg class="tlo-ring-svg-rev" viewBox="0 0 94 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="rg2" x1="94" y1="0" x2="0" y2="94" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%"   stop-color="#22d3ee"/>
+                            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="47" cy="47" r="44" stroke="url(#rg2)" stroke-width="1.5"
+                            stroke-linecap="round" stroke-dasharray="50 226"/>
+                </svg>
+                <!-- Ring 3: innermost slow -->
+                <svg class="tlo-ring-svg-3" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="rg3" x1="0" y1="78" x2="78" y2="0" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%"   stop-color="#8b5cf6"/>
+                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="39" cy="39" r="36" stroke="url(#rg3)" stroke-width="1"
+                            stroke-linecap="round" stroke-dasharray="25 200"/>
+                </svg>
+                <!-- Orbiting white dot -->
+                <div class="tlo-orbit-dot"></div>
+                <!-- Centre icon -->
+                <div class="tlo-logo-inner">
+                    <i class="fas fa-flask-vial"></i>
+                </div>
+            </div>
+
+            <p class="tlo-title">Running Test</p>
+            <p class="tlo-subtitle" id="tlo-subtitle">Initialising test environment&hellip;</p>
+
+            <!-- Progress bar -->
+            <div class="tlo-progress-track">
+                <div class="tlo-progress-fill" id="tlo-progress"></div>
+            </div>
+            <div class="tlo-progress-label" id="tlo-progress-label">0%</div>
+
+            <!-- Step checklist -->
+            <div class="tlo-steps" id="tlo-steps">
+                <div class="tlo-step" id="tlo-step-0">
+                    <div class="tlo-step-icon"><i class="fas fa-server"></i></div>
+                    <span>Launching browser session</span>
+                </div>
+                <div class="tlo-step" id="tlo-step-1">
+                    <div class="tlo-step-icon"><i class="fas fa-globe"></i></div>
+                    <span>Navigating to target URL</span>
+                </div>
+                <div class="tlo-step" id="tlo-step-2">
+                    <div class="tlo-step-icon"><i class="fas fa-list-check"></i></div>
+                    <span>Executing test commands</span>
+                </div>
+                <div class="tlo-step" id="tlo-step-3">
+                    <div class="tlo-step-icon"><i class="fas fa-brain"></i></div>
+                    <span>AI analysis &amp; verification</span>
+                </div>
+                <div class="tlo-step" id="tlo-step-4">
+                    <div class="tlo-step-icon"><i class="fas fa-file-chart-column"></i></div>
+                    <span>Generating test report</span>
+                </div>
+            </div>
+
+            <!-- Terminal ticker -->
+            <div class="tlo-ticker" id="tlo-ticker" aria-hidden="true">
+                <span class="tlo-ticker-prompt">nova@test:~$</span>
+                <span class="tlo-ticker-text" id="tlo-ticker-text">init selenium driver</span>
+                <span class="tlo-ticker-cursor"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <i class="fa-solid fa-flask-vial"></i>
+                <span>NOVA</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}"
+                               href="{{ url_for('main.dashboard') }}">
+                                <i class="fas fa-gauge-high me-1"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.code_analysis' %}active{% endif %}"
+                               href="{{ url_for('main.code_analysis') }}">
+                                <i class="fas fa-code me-1"></i> Code Analysis
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.test_suites' %}active{% endif %}"
+                               href="{{ url_for('main.test_suites') }}">
+                                <i class="fas fa-folder-open me-1"></i> Test Suites
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.history' %}active{% endif %}"
+                               href="{{ url_for('main.history') }}">
+                                <i class="fas fa-clock-rotate-left me-1"></i> History
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.profile' %}active{% endif %}"
+                               href="{{ url_for('main.profile') }}">
+                                <span class="nav-avatar-badge">{{ current_user.name[0].upper() }}</span>
+                                Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}"
+                               href="{{ url_for('main.about') }}">
+                                <i class="fas fa-circle-info me-1"></i> About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-right-from-bracket me-1"></i> Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">
+                                <i class="fas fa-right-to-bracket me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.register') }}">
+                                <i class="fas fa-user-plus me-1"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Theme Picker -->
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <div class="theme-picker-wrap" id="theme-picker-wrap">
+                            <button class="theme-picker-btn" id="theme-picker-btn" title="Change theme">
+                                <span class="theme-icon" id="theme-icon-display">🎨</span>
+                                <span class="theme-label" id="theme-label-display">Theme</span>
+                                <i class="fas fa-chevron-down" style="font-size:0.65rem;opacity:0.6;"></i>
+                            </button>
+                            <div class="theme-picker-dropdown" id="theme-picker-dropdown">
+                                <button class="theme-opt" data-theme="dark">
+                                    <span class="theme-opt-swatch sw-dark"></span> Dark
+                                </button>
+                                <button class="theme-opt" data-theme="light">
+                                    <span class="theme-opt-swatch sw-light"></span> Light
+                                </button>
+                                <button class="theme-opt" data-theme="cyberpunk">
+                                    <span class="theme-opt-swatch sw-cyberpunk"></span> Cyberpunk
+                                </button>
+                                <button class="theme-opt" data-theme="ocean">
+                                    <span class="theme-opt-swatch sw-ocean"></span> Ocean
+                                </button>
+                                <button class="theme-opt" data-theme="midnight">
+                                    <span class="theme-opt-swatch sw-midnight"></span> Midnight
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {% if category == 'success' %}<i class="fas fa-check-circle me-2"></i>
+                    {% elif category == 'danger' %}<i class="fas fa-exclamation-circle me-2"></i>
+                    {% elif category == 'warning' %}<i class="fas fa-exclamation-triangle me-2"></i>
+                    {% else %}<i class="fas fa-info-circle me-2"></i>{% endif %}
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 <strong>Nova</strong>. AI-Powered Automation Testing Platform.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>
+    // ===================================================
+    // MULTI-THEME MANAGER
+    // ===================================================
+    (function () {
+        const html      = document.documentElement;
+        const hljsDark  = document.getElementById('hljs-theme-dark');
+        const hljsLight = document.getElementById('hljs-theme-light');
+
+        const THEMES = {
+            dark:      { icon: '🌑', label: 'Dark' },
+            light:     { icon: '☀️', label: 'Light' },
+            cyberpunk: { icon: '⚡', label: 'Cyberpunk' },
+            ocean:     { icon: '🌊', label: 'Ocean' },
+            midnight:  { icon: '🔥', label: 'Midnight' }
+        };
+
+        const saved = localStorage.getItem('nova-theme') || 'dark';
+        applyTheme(saved);
+
+        // Picker toggle
+        const pickerBtn = document.getElementById('theme-picker-btn');
+        const dropdown  = document.getElementById('theme-picker-dropdown');
+        if (pickerBtn && dropdown) {
+            pickerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('open');
+            });
+            document.addEventListener('click', () => dropdown.classList.remove('open'));
+            dropdown.querySelectorAll('.theme-opt').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    applyTheme(btn.dataset.theme);
+                    dropdown.classList.remove('open');
+                });
+            });
+        }
+
+        function applyTheme(theme) {
+            if (!THEMES[theme]) theme = 'dark';
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('nova-theme', theme);
+
+            const iconEl  = document.getElementById('theme-icon-display');
+            const labelEl = document.getElementById('theme-label-display');
+            if (iconEl)  iconEl.textContent  = THEMES[theme].icon;
+            if (labelEl) labelEl.textContent = THEMES[theme].label;
+
+            // Highlight.js stylesheet
+            const isLight = theme === 'light';
+            if (hljsLight) hljsLight.disabled = !isLight;
+            if (hljsDark)  hljsDark.disabled  = isLight;
+
+            // Mark active option
+            document.querySelectorAll('.theme-opt').forEach(o => {
+                o.classList.toggle('active', o.dataset.theme === theme);
+            });
+        }
+    })();
+
+    // ===================================================
+    // PASSWORD TOGGLE
+    // ===================================================
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = (toggleId, inputId) => {
+            const icon  = document.getElementById(toggleId);
+            const input = document.getElementById(inputId);
+            if (icon && input) {
+                icon.addEventListener('click', function () {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+        };
+        togglePassword('togglePassword', 'password');
+        togglePassword('toggleConfirmPassword', 'confirm_password');
+
+        // Auto-dismiss flash alerts after 5s
+        document.querySelectorAll('.alert-dismissible').forEach(alert => {
+            setTimeout(() => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                if (bsAlert) bsAlert.close();
+            }, 5000);
+        });
+    });
+
+    // ===================================================
+    // TOAST NOTIFICATION SYSTEM
+    // ===================================================
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const icons = {
+            success: 'fa-check-circle',
+            error:   'fa-times-circle',
+            warning: 'fa-exclamation-triangle',
+            info:    'fa-info-circle'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `toast-item toast-${type}`;
+        toast.innerHTML = `<i class="fas ${icons[type] || icons.info}" style="color:var(--color-${type === 'error' ? 'danger' : type});"></i><span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('toast-exit');
+            setTimeout(() => toast.remove(), 350);
+        }, 4000);
+    }
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

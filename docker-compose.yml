@@ -1,0 +1,74 @@
+
+services:
+  # Redis Message Broker for Celery tasks
+  redis:
+    image: redis:7-alpine
+    container_name: nova_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Flask Web Application Service
+  web:
+    build: .
+    container_name: nova_web
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONPATH=/app
+      - SECRET_KEY=prod-secret-key-change-me
+      - DATABASE_URL=sqlite:////app/instance/database.db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_TASK_ALWAYS_EAGER=false
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=llama3.2
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - nova_db_data:/app/instance
+    command: >
+      sh -c "flask db upgrade 2>/dev/null || true;
+      exec gunicorn --bind 0.0.0.0:5000
+      --workers 2
+      --worker-class gevent
+      --worker-connections 4
+      --timeout 300
+      run:app"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: on-failure
+
+  # Celery Async Test Runner Worker
+  celery_worker:
+    build: .
+    container_name: nova_celery_worker
+    command: celery -A celery_worker.celery worker --loglevel=info -P gevent --concurrency=4
+    environment:
+      - FLASK_ENV=production
+      - PYTHONPATH=/app
+      - SECRET_KEY=prod-secret-key-change-me
+      - DATABASE_URL=sqlite:////app/instance/database.db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_TASK_ALWAYS_EAGER=false
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=llama3.2
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - nova_db_data:/app/instance
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  nova_db_data:
+    driver: local

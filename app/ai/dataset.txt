@@ -1,0 +1,74 @@
+Q: what is selenium?
+A: selenium automates browsers. in testverse, you use it implicitly via commands like type, click, and verify.
+
+Q: how to test login page?
+A: type "admin" into id=user, type "pass" into id=pass, click id=login, verify "dashboard" in id=header.
+
+Q: what is automation testing?
+A: it is the use of software tools like testverse to run repeatable tests against an application to ensure quality.
+
+Q: how to click a button?
+A: use the click command: click id=submit-btn. you can use id, name, xpath, or css_selector as locators.
+
+Q: how to type text?
+A: use the type command: type "hello world" into name=search_query. always wrap the text in quotes.
+
+Q: how to verify text?
+A: use the verify command: verify "success" in class_name=alert-success. this ensures the app state is correct.
+
+Q: what is xpath?
+A: xpath navigates html. example: click xpath=//button[contains(text(), 'submit')]. it is powerful for complex elements.
+
+Q: what is css selector?
+A: css selector finds elements by style rules. example: click css_selector=.btn-primary.
+
+Q: how to handle dynamic elements?
+A: testverse automatically waits up to 10 seconds for elements to appear. just use a reliable id or xpath locator.
+
+Q: what is a test case?
+A: a single scenario you want to test. in testverse, it is a sequence of type, click, and verify commands.
+
+Q: what is a test suite?
+A: a collection of test cases grouped together, allowing you to test entire features or regression test the whole app.
+
+Q: how to write a good test?
+A: make it atomic. do one thing per test. always end with a verify command to assert the expected outcome.
+
+Q: how to take screenshot?
+A: enable the 'visual test' toggle in testverse. it automatically captures and compares screenshots for every step.
+
+Q: how to test a search feature?
+A: type "laptop" into name=q, click id=search-icon, verify "results for laptop" in xpath=//h2.
+
+Q: how to test a checkout flow?
+A: click id=cart, click id=checkout, type "123 street" into id=address, click id=pay, verify "order confirmed" in id=msg.
+
+Q: what is headless testing?
+A: running the browser without a visible ui. testverse runs in headless mode to make tests faster and run in the background.
+
+Q: what is regression testing?
+A: re-running tests to ensure recent code changes haven't broken existing, previously working features.
+
+Q: how to assert in testverse?
+A: use the verify command. it acts as an assertion to ensure the text exists inside the specified element.
+
+Q: what is a locator?
+A: a locator tells the test engine how to find an html element. supported locators: id, name, xpath, css_selector.
+
+Q: how to test a contact form?
+A: type "user@mail.com" into id=email, type "hello" into id=msg, click id=send, verify "message sent" in id=alert.
+
+Q: what is continuous integration?
+A: automatically running testverse test suites every time code is committed to ensure stability.
+
+Q: what is a bug?
+A: a flaw in the software. testverse's ai helps identify probable causes and suggests exact script fixes when tests fail.
+
+Q: how to find element by id?
+A: use the id locator. example: type "john" into id=first_name. id is the fastest and most reliable locator.
+
+Q: what is the difference between unit and integration testing?
+A: unit tests verify individual functions. testverse performs end-to-end integration testing via the browser.
+
+Q: what happens if an element is not found?
+A: testverse waits 10 seconds. if still not found, it fails the step and asks the ai to suggest a fix for the selector.

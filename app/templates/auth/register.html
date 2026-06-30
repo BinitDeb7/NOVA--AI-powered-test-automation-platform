@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — Nova{% endblock %}
+
+{% block content %}
+<div class="auth-split-container">
+
+    <!-- LEFT PANEL — Branding -->
+    <div class="auth-brand-panel">
+        <div class="auth-brand-inner">
+            <div class="auth-brand-logo">
+                <i class="fas fa-flask-vial"></i>
+            </div>
+            <h1 class="auth-brand-title">NOVA</h1>
+            <p class="auth-brand-sub">Join thousands of testers building smarter QA workflows</p>
+
+            <div class="auth-feature-list">
+                <div class="auth-feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>Get started in under 60 seconds</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="fas fa-shield-halved"></i>
+                    <span>Secure, private &amp; locally powered</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Full test history &amp; PDF reports</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>AI bug detection &amp; fix suggestions</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL — Form -->
+    <div class="auth-form-panel">
+        <div class="auth-form-inner">
+
+            <!-- Logo small (mobile) -->
+            <div class="auth-mobile-logo d-lg-none">
+                <i class="fas fa-flask-vial"></i> NOVA
+            </div>
+
+            <div class="auth-icon mb-3">
+                <i class="fas fa-user-plus"></i>
+            </div>
+
+            <h2 class="auth-form-title">Create Account</h2>
+            <p class="auth-form-sub">Start testing smarter today — it's free</p>
+
+            <form method="POST" action="{{ url_for('auth.register_post') }}" novalidate>
+
+                <div class="auth-field mb-3">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" name="name"
+                               placeholder="Your full name" autocomplete="name" required>
+                    </div>
+                </div>
+
+                <div class="auth-field mb-3">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="email" class="form-control" name="email"
+                               placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+                </div>
+
+                <div class="auth-field mb-3">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" name="password" id="password"
+                               placeholder="Create a strong password" autocomplete="new-password" required>
+                        <span class="input-group-text" style="cursor:pointer;" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="auth-field mb-4">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock-open"></i></span>
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password"
+                               placeholder="Repeat your password" autocomplete="new-password" required>
+                        <span class="input-group-text" style="cursor:pointer;" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Password strength indicator -->
+                <div class="mb-3">
+                    <div class="auth-strength-bar" id="strength-bar">
+                        <div class="auth-strength-fill" id="strength-fill"></div>
+                    </div>
+                    <small id="strength-label" class="text-muted">Enter a password to check strength</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-auth-submit">
+                    <i class="fas fa-user-check me-2"></i>Create Account
+                </button>
+
+            </form>
+
+            <div class="auth-footer-links mt-4">
+                <span style="color:var(--text-muted);font-size:0.88rem;">Already have an account?</span>
+                <a href="{{ url_for('auth.login') }}" class="auth-link fw-semibold">Sign in</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Password strength meter
+const pwInput = document.getElementById('password');
+const fill    = document.getElementById('strength-fill');
+const label   = document.getElementById('strength-label');
+const colors  = ['#ef4444','#f59e0b','#3b82f6','#10b981'];
+const labels  = ['Weak','Fair','Good','Strong'];
+
+pwInput?.addEventListener('input', () => {
+    const v = pwInput.value;
+    let score = 0;
+    if (v.length >= 8)        score++;
+    if (/[A-Z]/.test(v))      score++;
+    if (/[0-9]/.test(v))      score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const pct = v.length === 0 ? 0 : ((score / 4) * 100);
+    fill.style.width        = pct + '%';
+    fill.style.background   = colors[Math.max(score - 1, 0)];
+    label.textContent       = v.length === 0 ? 'Enter a password to check strength' : labels[Math.max(score - 1, 0)];
+    label.style.color       = v.length === 0 ? '' : colors[Math.max(score - 1, 0)];
+});
+</script>
+{% endblock %}

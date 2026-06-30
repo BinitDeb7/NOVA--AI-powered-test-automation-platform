@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Nova{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="page-header">
+    <h2>
+        <i class="fas fa-gauge-high"></i>
+        Welcome back, {{ name }}!
+    </h2>
+    <p>Run automated tests, generate AI scripts, and manage your testing workflow.</p>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- ================= START TEST CARD ================= -->
+    <div class="card mb-4 dashboard-card fade-in">
+        <div class="card-body">
+
+            <input type="hidden" id="test-case-id" value="{{ test_case_id or '' }}">
+            <input type="hidden" id="is-visual-test" value="{{ is_visual_test or '' }}">
+
+            <h5 class="card-title">
+                <i class="fas fa-play-circle"></i>
+                Start a New Test
+            </h5>
+
+            {% if is_visual_test %}
+            <div class="alert alert-info">
+                <i class="fas fa-eye me-2"></i>
+                You are running a <strong>Visual Regression Test</strong>.
+            </div>
+            {% endif %}
+
+            <!-- URL -->
+            <div class="mb-3">
+                <label for="url" class="form-label">Website URL</label>
+                <div class="input-group">
+                    <span class="input-group-text" style="border-right: none;">
+                        <i class="fas fa-globe"></i>
+                    </span>
+                    <input type="url" class="form-control" id="url" style="border-left: none;"
+                           placeholder="https://example.com" required>
+                </div>
+            </div>
+
+            <!-- Commands -->
+            <div class="mb-3">
+                <label for="commands" class="form-label">Test Commands</label>
+                <textarea class="form-control" id="commands" rows="10"
+                          placeholder='Example:
+type "user" into "id=username"
+type "pass" into "id=password"
+click "id=login"
+verify text "Dashboard" in "class_name=title"'>{{ commands }}</textarea>
+            </div>
+
+            <div class="form-text mb-3">
+                <i class="fas fa-language me-1"></i>
+                Supported voice languages: en-US, hi-IN, mr-IN, es-ES, fr-FR
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="start-voice" class="btn btn-info">
+                    <i class="fas fa-microphone"></i> Voice Input
+                </button>
+                <button id="translate-btn" class="btn btn-warning">
+                    <i class="fas fa-language"></i> Translate
+                </button>
+                <button id="generate-script-btn" class="btn btn-success"
+                        data-bs-toggle="modal" data-bs-target="#generateScriptModal">
+                    <i class="fas fa-robot"></i> AI Script
+                </button>
+                <button id="run-test-btn" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Run Test
+                </button>
+                <button id="save-btn" class="btn btn-secondary">
+                    <i class="fas fa-floppy-disk"></i> Save Suite
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= TEST RESULTS CARD ================= -->
+    <div class="card dashboard-card fade-in fade-in-delay-2">
+        <div class="card-body">
+
+            <h5 class="card-title">
+                <i class="fas fa-chart-bar"></i>
+                Test Results
+            </h5>
+
+            <!-- Spinner -->
+            <div id="spinner" class="d-none text-center my-4">
+                <div class="spinner-border" role="status" style="width: 2.5rem; height: 2.5rem;"></div>
+                <p class="loading-text mt-2">Executing test steps...</p>
+            </div>
+
+            <!-- Results -->
+            <div id="results-container" class="table-responsive">
+                <div class="text-center py-4">
+                    <i class="fas fa-flask" style="font-size: 2rem; color: var(--text-muted); opacity: 0.4;"></i>
+                    <p class="text-muted mt-2 mb-0">Run a test to see results here.</p>
+                </div>
+            </div>
+
+            <!-- Visual test actions -->
+            <div id="visual-test-actions" class="d-none mt-3">
+                <button id="approve-baseline-btn" class="btn btn-success">
+                    <i class="fas fa-check me-1"></i> Approve New Baseline
+                </button>
+            </div>
+
+            <!-- Download Buttons -->
+            <div class="action-buttons mt-3">
+                <button id="download-btn" class="btn btn-danger d-none">
+                    <i class="fas fa-file-pdf me-1"></i> Download PDF
+                </button>
+                <button id="download-excel-btn" class="btn btn-success d-none">
+                    <i class="fas fa-file-excel me-1"></i> Download Excel
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= AI SCRIPT GENERATOR MODAL ================= -->
+<div class="modal fade" id="generateScriptModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-robot me-2" style="color: var(--color-primary-light);"></i>
+                    AI Script Generator
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Describe your test goal in plain English. The AI will analyze the website and generate a complete script.
+                </p>
+                <div class="mb-3">
+                    <label for="test-goal-input" class="form-label">Test Goal</label>
+                    <textarea class="form-control" id="test-goal-input" rows="3"
+                              placeholder="e.g., Test the login flow with invalid credentials and verify the error message appears"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </button>
+                <button class="btn btn-success" id="generate-script-confirm-btn">
+                    <i class="fas fa-bolt me-1"></i> Generate Script
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}?v=1.1"></script>
+{% endblock %}

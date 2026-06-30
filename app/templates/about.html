@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}About TestVerse — Nova{% endblock %}
+
+{% block content %}
+<div class="text-white">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-circle-info"></i>
+            About TestVerse
+        </h2>
+        <p>An AI-Powered Automated Web Testing Platform — built for the future of QA.</p>
+    </div>
+
+    <!-- Hero Description -->
+    <div class="card dashboard-card fade-in mb-4">
+        <div class="card-body text-center py-5">
+            <div style="font-size:3.5rem;margin-bottom:1rem;">
+                <i class="fas fa-robot" style="color:var(--color-primary-light);"></i>
+            </div>
+            <h3 style="font-weight:800;color:var(--text-heading);" class="mb-3">TestVerse — Nova</h3>
+            <p style="max-width:700px;margin:0 auto;line-height:1.8;color:var(--text-secondary);font-size:1.05rem;">
+                TestVerse is a hybrid AI-powered web automation testing platform. It combines a custom-trained
+                <strong style="color:var(--color-primary-light);">Mini Transformer LLM</strong> with a locally-hosted
+                <strong style="color:var(--color-accent);">Ollama model</strong> to deliver intelligent test script generation,
+                natural language testing, visual regression detection, and real-time AI bug analysis — all running
+                <strong style="color:var(--color-success);">100% locally</strong> on your machine.
+            </p>
+        </div>
+    </div>
+
+    <!-- Architecture Flow -->
+    <div class="card dashboard-card fade-in fade-in-delay-1 mb-4">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-diagram-project"></i> System Architecture</h5>
+            <div class="row g-3 mt-2 text-center">
+                <div class="col">
+                    <div style="padding:1rem;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2);">
+                        <i class="fas fa-globe" style="font-size:1.5rem;color:var(--color-primary-light);" class="mb-2"></i>
+                        <div style="font-weight:700;margin-top:0.5rem;">User Browser</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);">Flask Frontend</div>
+                    </div>
+                </div>
+                <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right" style="color:var(--text-muted);"></i></div>
+                <div class="col">
+                    <div style="padding:1rem;background:rgba(139,92,246,0.1);border-radius:12px;border:1px solid rgba(139,92,246,0.2);">
+                        <i class="fas fa-server" style="font-size:1.5rem;color:var(--color-accent);"></i>
+                        <div style="font-weight:700;margin-top:0.5rem;">Flask API</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);">Routes + Services</div>
+                    </div>
+                </div>
+                <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right" style="color:var(--text-muted);"></i></div>
+                <div class="col">
+                    <div style="padding:1rem;background:rgba(6,182,212,0.1);border-radius:12px;border:1px solid rgba(6,182,212,0.2);">
+                        <i class="fas fa-layer-group" style="font-size:1.5rem;color:var(--color-info);"></i>
+                        <div style="font-weight:700;margin-top:0.5rem;">Celery + Redis</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);">Async Job Queue</div>
+                    </div>
+                </div>
+                <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right" style="color:var(--text-muted);"></i></div>
+                <div class="col">
+                    <div style="padding:1rem;background:rgba(34,197,94,0.1);border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
+                        <i class="fas fa-chrome" style="font-size:1.5rem;color:var(--color-success);"></i>
+                        <div style="font-weight:700;margin-top:0.5rem;">Selenium</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);">Headless Chrome</div>
+                    </div>
+                </div>
+                <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right" style="color:var(--text-muted);"></i></div>
+                <div class="col">
+                    <div style="padding:1rem;background:rgba(245,158,11,0.1);border-radius:12px;border:1px solid rgba(245,158,11,0.2);">
+                        <i class="fas fa-brain" style="font-size:1.5rem;color:var(--color-warning);"></i>
+                        <div style="font-weight:700;margin-top:0.5rem;">Hybrid AI</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);">Mini LLM + Ollama</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="card dashboard-card fade-in fade-in-delay-2 mb-4">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-cubes"></i> Tech Stack</h5>
+            <div class="row g-3 mt-1">
+                {% set stack = [
+                    ('Python 3.11', 'fa-python', 'color-primary-light', 'Core backend language'),
+                    ('Flask 3.0', 'fa-flask', 'color-accent', 'Web framework + routing'),
+                    ('Celery + Redis', 'fa-layer-group', 'color-info', 'Async background workers'),
+                    ('PostgreSQL', 'fa-database', 'color-success', 'Production database'),
+                    ('Selenium 4', 'fa-chrome', 'color-warning', 'Browser automation engine'),
+                    ('Pillow', 'fa-image', 'color-danger', 'Visual regression (pixel diff)'),
+                    ('PyTorch', 'fa-fire', 'color-primary-light', 'Custom Mini Transformer LLM'),
+                    ('Ollama (phi3:mini)', 'fa-robot', 'color-accent', 'Local LLM inference engine'),
+                    ('Bootstrap 5', 'fa-bootstrap', 'color-info', 'Responsive UI framework'),
+                    ('Chart.js', 'fa-chart-pie', 'color-success', 'Analytics visualizations'),
+                    ('FPDF2 + openpyxl', 'fa-file-pdf', 'color-danger', 'PDF & Excel report export'),
+                    ('Web Speech API', 'fa-microphone', 'color-warning', 'Voice input recognition'),
+                ] %}
+                {% for name, icon, color, desc in stack %}
+                <div class="col-md-4 col-6">
+                    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--glass-border);">
+                        <i class="fas {{ icon }}" style="font-size:1.3rem;color:var(--{{ color }});flex-shrink:0;"></i>
+                        <div>
+                            <div style="font-weight:700;font-size:0.88rem;color:var(--text-heading);">{{ name }}</div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);">{{ desc }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="card dashboard-card fade-in fade-in-delay-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-star"></i> Key Innovations</h5>
+            <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                    <div style="padding:1rem;background:rgba(99,102,241,0.06);border-radius:10px;border-left:3px solid var(--color-primary-light);">
+                        <h6 style="color:var(--color-primary-light);font-weight:700;">Hybrid AI Engine</h6>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Routes queries intelligently between a lightweight custom-trained PyTorch Mini Transformer for instant domain Q&amp;A, and a full Ollama LLM for deep DOM analysis and script generation.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="padding:1rem;background:rgba(34,197,94,0.06);border-radius:10px;border-left:3px solid var(--color-success);">
+                        <h6 style="color:var(--color-success);font-weight:700;">Visual Regression Testing</h6>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Captures and pixel-diffs browser screenshots at each test step using Pillow ImageChops. Detects UI regressions automatically with a 0.1% change threshold.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="padding:1rem;background:rgba(6,182,212,0.06);border-radius:10px;border-left:3px solid var(--color-info);">
+                        <h6 style="color:var(--color-info);font-weight:700;">Natural Language → Test Script</h6>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Users describe tests in plain English. The Hybrid AI analyzes the live DOM and generates ready-to-run Selenium commands using a custom 3-command DSL.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="padding:1rem;background:rgba(245,158,11,0.06);border-radius:10px;border-left:3px solid var(--color-warning);">
+                        <h6 style="color:var(--color-warning);font-weight:700;">100% Local &amp; Private</h6>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">No API keys, no cloud. All AI inference runs locally via Ollama, ensuring sensitive test data never leaves your machine.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

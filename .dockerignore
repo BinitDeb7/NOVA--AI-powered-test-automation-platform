@@ -1,0 +1,42 @@
+# Environment / secrets — NEVER bake these into the image
+# Docker compose environment: section injects the correct values at runtime
+.env
+.env.*
+!.env.example
+
+.git
+.gitignore
+.gitattributes
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# Python Cache & Compiled Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Local databases, instances & scratch files
+instance/
+*.db
+*.sqlite
+scratch/
+
+# IDEs & System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore

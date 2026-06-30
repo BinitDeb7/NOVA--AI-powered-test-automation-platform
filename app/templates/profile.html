@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — {{ current_user.name }} — Nova{% endblock %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-user-circle"></i>
+            My Profile
+        </h2>
+        <p>Your account details, activity overview and personalisation settings.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- === LEFT: Avatar Card === -->
+        <div class="col-lg-4">
+            <div class="card dashboard-card fade-in h-100">
+                <div class="card-body text-center py-4">
+
+                    <!-- Avatar -->
+                    <div class="profile-avatar mx-auto mb-3" id="profile-avatar-display">
+                        {{ current_user.name[0].upper() }}
+                    </div>
+
+                    <!-- Name & email -->
+                    <h4 class="mb-1 fw-700" style="font-weight:700;color:var(--text-heading);">
+                        {{ current_user.name }}
+                    </h4>
+                    <p class="text-muted mb-3" style="font-size:0.88rem;">{{ current_user.email }}</p>
+
+                    <!-- Member since badge -->
+                    <span class="badge bg-info px-3 py-2" style="font-size:0.78rem;">
+                        <i class="fas fa-star me-1"></i> Nova Member
+                    </span>
+
+                    <hr style="border-color:var(--glass-border);margin:1.5rem 0;">
+
+                    <!-- Quick facts -->
+                    <div class="d-flex justify-content-around">
+                        <div class="text-center">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--color-primary-light);">{{ stats.total }}</div>
+                            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.6px;" class="text-muted">Test Runs</div>
+                        </div>
+                        <div class="text-center">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--color-success);">{{ stats.passed }}</div>
+                            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.6px;" class="text-muted">Passed</div>
+                        </div>
+                        <div class="text-center">
+                            <div style="font-size:1.5rem;font-weight:800;color:var(--color-accent);">{{ stats.suites }}</div>
+                            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.6px;" class="text-muted">Suites</div>
+                        </div>
+                    </div>
+
+                    <!-- Pass rate bar -->
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Pass Rate</small>
+                            <small style="color:var(--color-success);font-weight:600;">{{ stats.rate }}%</small>
+                        </div>
+                        <div class="profile-bar-track">
+                            <div class="profile-bar-fill" style="width:{{ stats.rate }}%;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- === RIGHT: Details + Change password === -->
+        <div class="col-lg-8">
+            <div class="d-flex flex-column gap-4">
+
+                <!-- Account Details -->
+                <div class="card dashboard-card fade-in fade-in-delay-1">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-id-card"></i> Account Details</h5>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Full Name</label>
+                                <div class="profile-detail-box">
+                                    <i class="fas fa-user me-2" style="color:var(--color-primary-light);"></i>
+                                    {{ current_user.name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <div class="profile-detail-box">
+                                    <i class="fas fa-envelope me-2" style="color:var(--color-primary-light);"></i>
+                                    {{ current_user.email }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Status</label>
+                                <div class="profile-detail-box">
+                                    <i class="fas fa-circle-check me-2" style="color:var(--color-success);"></i>
+                                    Active &amp; Verified
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">AI Engine</label>
+                                <div class="profile-detail-box">
+                                    <i class="fas fa-robot me-2" style="color:var(--color-accent);"></i>
+                                    AI Engine (Local · Ollama)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Summary -->
+                <div class="card dashboard-card fade-in fade-in-delay-2">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-line"></i> Activity Summary</h5>
+                        <div class="row g-3">
+                            {% set metrics = [
+                                ('Total Test Runs',    stats.total,  'fa-vial',          'color-primary-light'),
+                                ('Tests Passed',       stats.passed, 'fa-circle-check',  'color-success'),
+                                ('Tests Failed',       stats.failed, 'fa-circle-xmark',  'color-danger'),
+                                ('Saved Test Suites',  stats.suites, 'fa-folder-open',   'color-accent'),
+                            ] %}
+                            {% for label, val, icon, col in metrics %}
+                            <div class="col-6">
+                                <div class="profile-metric-card">
+                                    <i class="fas {{ icon }}" style="color:var(--{{ col }});font-size:1.3rem;"></i>
+                                    <div>
+                                        <div style="font-size:1.4rem;font-weight:800;color:var(--text-heading);">{{ val }}</div>
+                                        <div style="font-size:0.75rem;color:var(--text-muted);">{{ label }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pass/Fail Donut Chart -->
+                <div class="card dashboard-card fade-in fade-in-delay-3 mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-pie"></i> Test Results Analytics</h5>
+                        <div class="row align-items-center">
+                            <div class="col-md-5 text-center">
+                                <canvas id="passFailChart" style="max-height:200px;"></canvas>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width:14px;height:14px;border-radius:50%;background:var(--color-success);flex-shrink:0;"></div>
+                                        <div>
+                                            <div style="font-weight:700;color:var(--text-heading);">{{ stats.passed }} Passed</div>
+                                            <div style="font-size:0.78rem;color:var(--text-muted);">{{ stats.rate }}% success rate</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width:14px;height:14px;border-radius:50%;background:var(--color-danger);flex-shrink:0;"></div>
+                                        <div>
+                                            <div style="font-weight:700;color:var(--text-heading);">{{ stats.failed }} Failed</div>
+                                            <div style="font-size:0.78rem;color:var(--text-muted);">{{ 100 - stats.rate }}% failure rate</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width:14px;height:14px;border-radius:50%;background:var(--color-primary-light);flex-shrink:0;"></div>
+                                        <div>
+                                            <div style="font-weight:700;color:var(--text-heading);">{{ stats.suites }} Suites</div>
+                                            <div style="font-size:0.78rem;color:var(--text-muted);">Saved test configurations</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change Password -->
+                <div class="card dashboard-card fade-in fade-in-delay-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-lock"></i> Change Password</h5>
+                        <form method="POST" action="{{ url_for('main.change_password') }}">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">New Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" name="new_password"
+                                               id="new-password" placeholder="Enter new password" required minlength="6">
+                                        <span class="input-group-text" style="cursor:pointer;" onclick="togglePwd('new-password',this)">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Confirm Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" name="confirm_password"
+                                               id="confirm-password" placeholder="Repeat new password" required minlength="6">
+                                        <span class="input-group-text" style="cursor:pointer;" onclick="togglePwd('confirm-password',this)">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">
+                                <i class="fas fa-key me-2"></i>Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="card dashboard-card fade-in fade-in-delay-4" style="border-color:rgba(239,68,68,0.25);">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:var(--color-danger);">
+                            <i class="fas fa-triangle-exclamation"></i> Danger Zone
+                        </h5>
+                        <p class="text-muted" style="font-size:0.88rem;">
+                            Permanently delete all your test history. This action cannot be undone.
+                        </p>
+                        <form method="POST" action="{{ url_for('main.clear_all_history') }}"
+                              onsubmit="return confirm('This will permanently delete ALL your test history. Are you sure?');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash me-1"></i> Clear All History
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+function togglePwd(inputId, icon) {
+    const input = document.getElementById(inputId);
+    const i     = icon.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        i.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        i.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+// Chart
+(function() {
+    const ctx = document.getElementById('passFailChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Passed', 'Failed', 'Suites'],
+            datasets: [{
+                data: [{{ stats.passed }}, {{ stats.failed }}, {{ stats.suites }}],
+                backgroundColor: ['#22c55e', '#ef4444', '#6366f1'],
+                borderColor: 'rgba(255,255,255,0.08)',
+                borderWidth: 2,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '70%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.label}: ${ctx.parsed}`
+                    }
+                }
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,52 @@
+# ── Python ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environments ─────────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── Environment & secrets ────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Database ─────────────────────────────────────────────────────────
+instance/
+*.db
+*.sqlite3
+
+# ── Trained model weights (regenerate with: python -m app.ai.train) ──
+*.pth
+
+# ── Temp / generated reports ─────────────────────────────────────────
+app/static/temp_report_*.pdf
+*.tmp
+# Metrics / dev-only report dumps
+*_report.txt
+metrics_*.txt
+# Word / Office documents (use README.md instead)
+*.docx
+*.xlsx
+*.pptx
+
+# ── Large binaries / installers ──────────────────────────────────────
+*.exe
+*.msi
+*.pkg
+*.dmg
+
+# ── IDE / OS ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Build / dist ──────────────────────────────────────────────────────
+dist/
+build/
+*.egg-info/

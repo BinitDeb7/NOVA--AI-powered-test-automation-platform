@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Code Analysis — Nova{% endblock %}
+
+{% block content %}
+<div class="text-white">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-code"></i>
+            AI Code Analysis
+        </h2>
+        <p>Paste your Python code for instant bug detection, test generation, or refactoring suggestions.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Code Input Panel -->
+        <div class="col-lg-6">
+            <div class="card dashboard-card h-100 fade-in">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        <i class="fas fa-keyboard"></i>
+                        Code Input
+                    </h5>
+                    <p class="text-muted" style="font-size: 0.85rem;">Paste your Python function or class below.</p>
+                    <div class="form-group flex-grow-1 d-flex flex-column">
+                        <textarea id="code-input" class="form-control flex-grow-1" placeholder="def my_function(a, b):
+    # Your code here
+    return a + b"></textarea>
+                    </div>
+                    <div class="action-buttons mt-3">
+                        <button id="analyze-code-btn" class="btn btn-primary">
+                            <i class="fas fa-magnifying-glass"></i> Analyze Bugs
+                        </button>
+                        <button id="generate-tests-btn" class="btn btn-success">
+                            <i class="fas fa-vial"></i> Generate Tests
+                        </button>
+                        <button id="refactor-code-btn" class="btn btn-info">
+                            <i class="fas fa-wand-magic-sparkles"></i> Refactor
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="col-lg-6">
+            <div class="card dashboard-card h-100 fade-in fade-in-delay-2">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-sparkles"></i>
+                            AI Results
+                        </h5>
+                        <button id="download-analysis-pdf" class="btn btn-sm btn-danger">
+                            <i class="fas fa-file-pdf me-1"></i> PDF Report
+                        </button>
+                    </div>
+
+                    <div id="spinner-analysis" class="d-none text-center my-4">
+                        <div class="spinner-border" role="status" style="width: 2.5rem; height: 2.5rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="loading-text mt-2">AI is analyzing your code...</p>
+                    </div>
+
+                    <div id="results-output" class="flex-grow-1" style="background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-md); padding: 1.2rem; overflow-y: auto; min-height: 50vh;">
+                        <div class="text-center py-4">
+                            <i class="fas fa-brain" style="font-size: 2rem; color: var(--text-muted); opacity: 0.4;"></i>
+                            <p class="text-muted mt-2 mb-0">AI analysis results will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analysis.js') }}?v=1.1"></script>
+{% endblock %}

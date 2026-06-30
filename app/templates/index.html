@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Nova — AI-Powered Automation Testing{% endblock %}
+
+{% block content %}
+<div class="text-center text-white">
+
+    <!-- ===== HERO SECTION ===== -->
+    <div class="hero-section" style="position:relative; padding: 7rem 0 4rem;">
+
+        <!-- 3D floating shapes layer -->
+        <div class="hero-3d-scene">
+            <div class="shape-3d shape-cube"></div>
+            <div class="shape-3d shape-triangle"></div>
+            <div class="shape-3d shape-sphere"></div>
+            <div class="shape-3d shape-ring"></div>
+            <div class="shape-3d shape-diamond"></div>
+            <div class="shape-3d shape-grid"></div>
+        </div>
+
+        <!-- Decorative rings -->
+        <div class="hero-ring hero-ring-1"></div>
+        <div class="hero-ring hero-ring-2"></div>
+
+        <div style="position:relative; z-index:1;">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i>
+                AI-Powered Testing Platform
+            </div>
+
+            <h1 class="hero-title">Nova</h1>
+            <p class="hero-subtitle">
+                The future of software testing is here. Harness the power of AI to automate,
+                analyze, and accelerate your testing workflow — locally and privately.
+            </p>
+
+            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; animation: fadeInUp 0.6s ease 0.3s both;">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg cta-button">
+                    <i class="fas fa-rocket me-2"></i>Get Started Free
+                </a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-secondary btn-lg" style="border-radius:50px; padding:0.85rem 2rem; font-size:1rem; animation: fadeInUp 0.6s ease 0.4s both;">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_runs or '0' }}+</div>
+                    <div class="stat-label">Tests Run</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">AI</div>
+                    <div class="stat-label">Powered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Locator Types</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Local & Private</div>
+                </div>
+            </div>
+
+            <!-- Animated terminal -->
+            <div class="hero-terminal">
+                <div class="hero-terminal-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <span class="hero-terminal-title">nova ~ test-runner</span>
+                <div class="hero-terminal-body" id="hero-term-body">
+                    <div class="hero-term-line">
+                        <span class="hero-term-prompt">nova@ai:~$</span>
+                        <span class="hero-term-cmd">run test --url https://example.com</span>
+                    </div>
+                    <div class="hero-term-line">
+                        <span class="hero-term-info">→ Launching browser session...</span>
+                    </div>
+                    <div class="hero-term-line">
+                        <span class="hero-term-info">→ Executing 4 test commands...</span>
+                    </div>
+                    <div class="hero-term-line">
+                        <span class="hero-term-ok">✓ All steps passed [4/4]</span>
+                    </div>
+                    <div class="hero-term-line">
+                        <span class="hero-term-prompt">nova@ai:~$</span>
+                        <span class="hero-term-cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <div class="features-section" style="padding: 3rem 0 5rem;">
+        <h2 class="section-title">Core <span>Features</span></h2>
+        <div class="section-underline"></div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic-wand-sparkles"></i>
+                    </div>
+                    <h5>Natural Language Testing</h5>
+                    <p>Write test cases in plain English. Our AI translates your words into executable automation scripts instantly.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-bug-slash"></i>
+                    </div>
+                    <h5>AI Bug Assistant</h5>
+                    <p>When tests fail, our AI analyzes the error and suggests the probable cause and a reliable fix automatically.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h5>Voice Control</h5>
+                    <p>Execute tests hands-free using voice commands in multiple languages — English, Hindi, Marathi, and more.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h5>PDF &amp; Excel Reports</h5>
+                    <p>Automatically generate and download beautifully formatted PDF or Excel reports of your test runs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h5>AI Script Generation</h5>
+                    <p>Provide a URL and a goal. The AI analyzes the site and writes the entire test script for you automatically.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h5>Visual Regression Testing</h5>
+                    <p>Automatically detect visual bugs by comparing screenshots to a saved "baseline" image with pixel precision.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-save"></i>
+                    </div>
+                    <h5>Save &amp; Re-run Suites</h5>
+                    <p>Save complex test scripts as named "Test Suites" and re-run them anytime with a single click.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card reveal reveal-delay-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h5>Hybrid AI (Local)</h5>
+                    <p>Dual AI engine: Mini LLM for instant testing Q&amp;A and Ollama for deep analysis — no cloud, fully private.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ===== Scroll Reveal =====
+(function() {
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+        });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+/* app/static/css/pdf_styles.css */
+/* This file is for PDF-specific styles that might override default browser rendering */
+
+/* Example: Adjust font sizes specifically for print */
+body {
+    font-size: 10pt;
+}
+
+pre {
+    padding: 0.8em;
+    font-size: 9pt;
+}
+
+/* Any other PDF-specific adjustments */
