@@ -353,7 +353,7 @@ ollama serve          # start the Ollama server
 ollama pull llama3.2  # download the default model (~2 GB)
 ```
 
-The Mini LLM fallback works without Ollama — it will activate automatically if Ollama is not running.
+The Mini LLM fallback works without Ollama - it will activate automatically if Ollama is not running.
 
 ### 6. Run Database Migrations
 
@@ -482,7 +482,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 ## 👨‍💻 Author
 
-**Binit Deb** — Final Year B.Tech CSE Project  
+**Binit Deb** - Final Year B.Tech CSE Project  
 [GitHub](https://github.com/BinitDeb7) · [LinkedIn](https://www.linkedin.com/in/binitdeb/)
 
 ---
